@@ -78,6 +78,11 @@ The default value is still NOTER_PAGE for backwards compatibility."
   :group 'org-noter
   :type 'string)
 
+(defcustom org-noter-show-notes-count-in-doc-mode-line t
+  "Whether to show a count of notes for the current page in the document buffer."
+  :group 'org-noter
+  :type 'boolean)
+
 (defconst org-noter-root-headline-format-function #'file-name-base
   "Function to prepare the root headline for the buffer.
 
@@ -2073,7 +2078,7 @@ Keymap:
             (,(kbd "C-M-n") . org-noter-sync-next-note))
 
   (let ((mode-line-segment '(:eval (org-noter--mode-line-text))))
-    (if org-noter-doc-mode
+    (if (and org-noter-doc-mode org-noter-show-notes-count-in-doc-mode-line)
         (if (symbolp (car-safe mode-line-format))
             (setq mode-line-format (list mode-line-segment mode-line-format))
           (push mode-line-segment mode-line-format))
