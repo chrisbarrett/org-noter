@@ -78,6 +78,12 @@ The default value is still NOTER_PAGE for backwards compatibility."
   :group 'org-noter
   :type 'string)
 
+(defconst org-noter-root-headline-format-function #'file-name-base
+  "Function to prepare the root headline for the buffer.
+
+The function is called with one argument, the path to the notes
+file, and should return a string to be used for the headline.")
+
 (defcustom org-noter-default-heading-title "Notes for page $p$"
   "The default title for headings created with `org-noter-insert-note'.
 $p$ is replaced with the number of the page or chapter you are in
@@ -2264,7 +2270,7 @@ notes file, even if it finds one."
             (with-current-buffer (find-file-noselect (car notes-files))
               (goto-char (point-max))
               (insert (if (save-excursion (beginning-of-line) (looking-at "[[:space:]]*$")) "" "\n")
-                      "* " document-base)
+                      "* " (funcall org-noter-root-headline-format-function (buffer-file-name)))
               (org-entry-put nil org-noter-property-doc-file
                              (file-relative-name document-used-path
                                                  (file-name-directory (car notes-files)))))
