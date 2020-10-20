@@ -2104,7 +2104,6 @@ even if the current heading annotates one.
 
 With a prefix number ARG:
 - Greater than 0: Open the document like `find-file'
--     Equal to 0: Create session with `org-noter-always-create-frame' toggled
 -    Less than 0: Open the folder containing the document
 
 - Creating the session from the document ---------------------------------------
@@ -2129,8 +2128,6 @@ notes file, even if it finds one."
     (let* ((notes-file-path (buffer-file-name))
            (document-property (org-noter--get-or-read-document-property (not (equal arg '(4)))
                                                                         (equal arg '(16))))
-           (org-noter-always-create-frame
-            (if (and (numberp arg) (= arg 0)) (not org-noter-always-create-frame) org-noter-always-create-frame))
            (ast (org-noter--parse-root (vector (current-buffer) document-property))))
 
       (when (catch 'should-continue
