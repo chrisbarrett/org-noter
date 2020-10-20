@@ -231,6 +231,12 @@ The title used will be the default one."
 
 ;; --------------------------------------------------------------------------------
 ;; NOTE(nox): Integration with other packages
+
+(defcustom org-noter-root-headline-inserted-hook nil
+  "Hook called after a root headline for notes has been inserted."
+  :group 'org-noter
+  :type 'hook)
+
 (defcustom org-noter--check-location-property-hook nil
   "TODO"
   :group 'org-noter
@@ -2271,6 +2277,7 @@ notes file, even if it finds one."
               (goto-char (point-max))
               (insert (if (save-excursion (beginning-of-line) (looking-at "[[:space:]]*$")) "" "\n")
                       "* " (funcall org-noter-root-headline-format-function (buffer-file-name)))
+              (run-hooks 'org-noter-root-headline-inserted-hook)
               (org-entry-put nil org-noter-property-doc-file
                              (file-relative-name document-used-path
                                                  (file-name-directory (car notes-files)))))
